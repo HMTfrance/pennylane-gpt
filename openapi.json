@@ -28,9 +28,11 @@
                 "type": "object",
                 "properties": {
                   "mode": {
-                    "type": "string",
-                    "example": "in_line"
-                  },
+  "type": "string",
+  "enum": ["in_line"],
+  "default": "in_line"
+}
+,
                   "period_start": {
                     "type": "string",
                     "format": "date",
