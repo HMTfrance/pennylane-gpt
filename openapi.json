@@ -2,8 +2,8 @@
   "openapi": "3.1.0",
   "info": {
     "title": "Pennylane Export GPT API",
-    "version": "1.0.2",
-    "description": "API Pennylane pour GPT personnalisé – Export du Grand Livre (création, récupération et nettoyage mémoire)"
+    "version": "1.0.3",
+    "description": "API Pennylane pour GPT personnalisé – Export du Grand Livre (création, récupération et nettoyage mémoire)."
   },
   "servers": [
     {
@@ -84,11 +84,11 @@
             "required": true,
             "description": "ID de l’export à vérifier",
             "schema": {
-              "type": "integer",
-              "example": 11353194
+              "type": "integer"
             }
           }
         ],
+        "x-urlTemplate": "/exports/{{export_id}}",
         "responses": {
           "200": {
             "description": "Détails de l’export",
@@ -103,12 +103,15 @@
                     "updated_at": { "type": "string" },
                     "url": {
                       "type": ["string", "null"],
-                      "description": "URL de téléchargement si disponible"
+                      "description": "Lien de téléchargement si disponible"
                     }
                   }
                 }
               }
             }
+          },
+          "404": {
+            "description": "Export introuvable ou ID invalide"
           }
         }
       }
