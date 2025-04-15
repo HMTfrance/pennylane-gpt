@@ -1,9 +1,9 @@
 {
   "openapi": "3.1.0",
   "info": {
-    "title": "Pennylane Export API",
-    "version": "1.0.1",
-    "description": "API pour générer un export du Grand Livre analytique depuis Pennylane (mode forcé : in_line)."
+    "title": "Pennylane Export GPT API",
+    "version": "1.0.2",
+    "description": "API Pennylane pour GPT personnalisé – Export du Grand Livre (création, récupération et nettoyage mémoire)"
   },
   "servers": [
     {
@@ -13,7 +13,7 @@
   "paths": {
     "/exports/analytical_general_ledgers": {
       "post": {
-        "summary": "Créer un export du Grand Livre analytique (mode in_line forcé)",
+        "summary": "Créer un export du Grand Livre analytique (mode in_line)",
         "operationId": "createGeneralLedgerExport",
         "security": [
           {
@@ -30,14 +30,12 @@
                   "period_start": {
                     "type": "string",
                     "format": "date",
-                    "example": "2025-01-01",
-                    "description": "Date de début au format YYYY-MM-DD"
+                    "example": "2025-01-01"
                   },
                   "period_end": {
                     "type": "string",
                     "format": "date",
-                    "example": "2025-12-31",
-                    "description": "Date de fin au format YYYY-MM-DD"
+                    "example": "2025-12-31"
                   },
                   "mode": {
                     "type": "string",
@@ -52,7 +50,7 @@
         },
         "responses": {
           "201": {
-            "description": "Export créé avec succès",
+            "description": "Export créé",
             "content": {
               "application/json": {
                 "schema": {
@@ -66,6 +64,78 @@
                 }
               }
             }
+          }
+        }
+      }
+    },
+    "/exports/{export_id}": {
+      "get": {
+        "summary": "Vérifie le statut d’un export de Grand Livre",
+        "operationId": "getExportStatus",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "export_id",
+            "in": "path",
+            "required": true,
+            "description": "ID de l’export à vérifier",
+            "schema": {
+              "type": "integer",
+              "example": 11353194
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Détails de l’export",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": { "type": "integer" },
+                    "status": { "type": "string" },
+                    "created_at": { "type": "string" },
+                    "updated_at": { "type": "string" },
+                    "url": {
+                      "type": ["string", "null"],
+                      "description": "URL de téléchargement si disponible"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/memory/delete_previous_export": {
+      "post": {
+        "summary": "Simule la suppression d’un ancien fichier du Grand Livre dans la mémoire du GPT",
+        "operationId": "deletePreviousLedgerFromKnowledge",
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "reason": {
+                    "type": "string",
+                    "example": "Remplacement par un nouvel export"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Action de nettoyage simulée (aucun effet réel côté API)"
           }
         }
       }
