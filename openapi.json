@@ -2,8 +2,8 @@
   "openapi": "3.1.0",
   "info": {
     "title": "Pennylane Export API",
-    "version": "1.0.0",
-    "description": "API pour générer un export du Grand Livre analytique depuis Pennylane."
+    "version": "1.0.1",
+    "description": "API pour générer un export du Grand Livre analytique depuis Pennylane (mode forcé : in_line)."
   },
   "servers": [
     {
@@ -13,7 +13,7 @@
   "paths": {
     "/exports/analytical_general_ledgers": {
       "post": {
-        "summary": "Créer un export du Grand Livre analytique",
+        "summary": "Créer un export du Grand Livre analytique (mode in_line forcé)",
         "operationId": "createGeneralLedgerExport",
         "security": [
           {
@@ -27,31 +27,32 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "mode": {
-  "type": "string",
-  "enum": ["in_line"],
-  "default": "in_line"
-}
-,
                   "period_start": {
                     "type": "string",
                     "format": "date",
-                    "example": "2025-01-01"
+                    "example": "2025-01-01",
+                    "description": "Date de début au format YYYY-MM-DD"
                   },
                   "period_end": {
                     "type": "string",
                     "format": "date",
-                    "example": "2025-03-31"
+                    "example": "2025-12-31",
+                    "description": "Date de fin au format YYYY-MM-DD"
+                  },
+                  "mode": {
+                    "type": "string",
+                    "enum": ["in_line"],
+                    "default": "in_line"
                   }
                 },
-                "required": ["mode", "period_start", "period_end"]
+                "required": ["period_start", "period_end", "mode"]
               }
             }
           }
         },
         "responses": {
-          "200": {
-            "description": "Export créé",
+          "201": {
+            "description": "Export créé avec succès",
             "content": {
               "application/json": {
                 "schema": {
