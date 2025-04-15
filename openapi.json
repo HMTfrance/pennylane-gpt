@@ -1,13 +1,13 @@
 {
   "openapi": "3.1.0",
   "info": {
-    "title": "Pennylane Export GPT API",
+    "title": "Pennylane GPT API (Fake Domain)",
     "version": "1.0.5",
-    "description": "API Pennylane pour GPT personnalisé – Export du Grand Livre (création, récupération, nettoyage)."
+    "description": "Actions liées à l’export du Grand Livre Pennylane – contournement de domaine."
   },
   "servers": [
     {
-      "url": "https://app.pennylane.com/api/external/v2"
+      "url": "https://fake.pennylane.api"
     }
   ],
   "paths": {
@@ -30,12 +30,12 @@
                   "period_start": {
                     "type": "string",
                     "format": "date",
-                    "example": "2025-01-01"
+                    "example": "2024-01-01"
                   },
                   "period_end": {
                     "type": "string",
                     "format": "date",
-                    "example": "2025-12-31"
+                    "example": "2024-03-31"
                   },
                   "mode": {
                     "type": "string",
@@ -50,20 +50,7 @@
         },
         "responses": {
           "201": {
-            "description": "Export créé",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "id": { "type": "integer" },
-                    "status": { "type": "string" },
-                    "created_at": { "type": "string" },
-                    "updated_at": { "type": "string" }
-                  }
-                }
-              }
-            }
+            "description": "Export créé avec succès"
           }
         }
       }
@@ -71,7 +58,7 @@
     "/exports/{export_id}": {
       "get": {
         "operationId": "getExportStatus",
-        "summary": "Vérifie le statut d’un export Pennylane via son ID",
+        "summary": "Vérifie le statut d’un export via son ID",
         "parameters": [
           {
             "name": "export_id",
@@ -80,7 +67,7 @@
             "schema": {
               "type": "integer"
             },
-            "description": "ID de l’export à interroger"
+            "description": "ID numérique de l’export"
           }
         ],
         "security": [
@@ -90,17 +77,17 @@
         ],
         "responses": {
           "200": {
-            "description": "Réponse contenant le statut et l'URL de l’export"
+            "description": "Statut de l’export renvoyé"
           },
           "404": {
-            "description": "Export non trouvé"
+            "description": "Export introuvable"
           }
         }
       }
     },
     "/memory/delete_previous_export": {
       "post": {
-        "summary": "Supprime un ancien fichier de Grand Livre de la mémoire (simulation)",
+        "summary": "Simule la suppression d’un fichier précédent du Grand Livre",
         "operationId": "deletePreviousLedgerFromMemory",
         "requestBody": {
           "required": false,
@@ -111,7 +98,6 @@
                 "properties": {
                   "reason": {
                     "type": "string",
-                    "description": "Motif de la suppression",
                     "example": "Remplacement par un nouvel export"
                   }
                 }
@@ -121,7 +107,7 @@
         },
         "responses": {
           "200": {
-            "description": "Suppression simulée réussie"
+            "description": "Suppression simulée"
           }
         }
       }
