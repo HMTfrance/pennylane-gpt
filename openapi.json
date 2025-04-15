@@ -1,0 +1,79 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Pennylane Export API",
+    "version": "1.0.0",
+    "description": "API pour générer un export du Grand Livre analytique depuis Pennylane."
+  },
+  "servers": [
+    {
+      "url": "https://app.pennylane.com/api/external/v2"
+    }
+  ],
+  "paths": {
+    "/exports/analytical_general_ledgers": {
+      "post": {
+        "summary": "Créer un export du Grand Livre analytique",
+        "operationId": "createGeneralLedgerExport",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "mode": {
+                    "type": "string",
+                    "example": "in_line"
+                  },
+                  "period_start": {
+                    "type": "string",
+                    "format": "date",
+                    "example": "2025-01-01"
+                  },
+                  "period_end": {
+                    "type": "string",
+                    "format": "date",
+                    "example": "2025-03-31"
+                  }
+                },
+                "required": ["mode", "period_start", "period_end"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Export créé",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": { "type": "integer" },
+                    "status": { "type": "string" },
+                    "created_at": { "type": "string" },
+                    "updated_at": { "type": "string" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    }
+  }
+}
